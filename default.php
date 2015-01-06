@@ -3,7 +3,7 @@
 $PluginInfo['PurchaseInvites'] = array(
    'Name' => 'Purchase Invites',
    'Description' => "Allows users to purchace invites",
-   'Version' => '0.1.2b',
+   'Version' => '0.1.3b',
    'RequiredPlugins' => array('MarketPlace' => '0.1.9b'),
    'RequiredApplications' => array('Vanilla' => '2.1'),
    'Author' => 'Paul Thomas',
@@ -16,7 +16,7 @@ class PurchaseInvites extends Gdn_Plugin {
     public static function PreConditions($UserID,$Product){
         $User =  Gdn::UserModel()->GetID($UserID);
         if ($User->Admin)
-            return array('status'=>'error','errormsg'=>T('You have unlimited invites, so don\'t need to purchase them'));
+            return array('status'=>'error','errormsg'=>T('You have unlimited invites, so don\'t need to purchase them.'));
         else
             return array('status'=>'pass');
     }
@@ -85,7 +85,6 @@ class PurchaseInvites extends Gdn_Plugin {
                 $Sender->Form->SetValidationResults($InvitationModel->Validation->Results());
             }
             if($Purchased){
-                echo Gdn_Format::ToDateTime(strtotime(C('Plugin.PurchaseInvites.Expire','+1 months')));
                 $Message = sprintf(T('You have purchased %s invitations, and have %s left in total. You need to use them up by %s, or they will expire.'),$Purchased,$Total,Gdn_Format::Date($User->DateSetInvitations));
             }else{
                 $Message = sprintf(T('You %s invitations. You need to use them up by %s, or they will expire.'),$Total,Gdn_Format::Date($User->DateSetInvitations));
